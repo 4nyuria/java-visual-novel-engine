@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private String displayedText = "";
     private int characterIndex = 0;
+    private int dialogueIndex = 0;
 
     private Timer textTimer;
     
@@ -102,15 +103,21 @@ public class GamePanel extends JPanel implements KeyListener {
             return;
         }
 
+        if (currentScene.getDialogues().isEmpty()) {
+            return;
+        }
+
         displayedText = "";
         characterIndex = 0;
 
-        String text = currentScene.getText();
-        
+        String text = currentScene
+                .getDialogues()
+                .get(dialogueIndex)
+                .getText();
 
         textTimer = new Timer(50, e -> {
-        	//timer del texto para efecto maquina de escribir
 
+            // Efecto máquina de escribir
             if (characterIndex < text.length()) {
 
                 displayedText += text.charAt(characterIndex);
@@ -136,7 +143,16 @@ public class GamePanel extends JPanel implements KeyListener {
             return true;
         }
 
-        return characterIndex >= currentScene.getText().length();
+        if (currentScene.getDialogues().isEmpty()) {
+            return true;
+        }
+
+        String text = currentScene
+                .getDialogues()
+                .get(dialogueIndex)
+                .getText();
+
+        return characterIndex >= text.length();
     }
 
     private void finishText() {
@@ -147,7 +163,14 @@ public class GamePanel extends JPanel implements KeyListener {
             return;
         }
 
-        displayedText = currentScene.getText();
+        if (currentScene.getDialogues().isEmpty()) {
+            return;
+        }
+
+        displayedText = currentScene
+                .getDialogues()
+                .get(dialogueIndex)
+                .getText();
 
         characterIndex = displayedText.length();
 
@@ -157,7 +180,6 @@ public class GamePanel extends JPanel implements KeyListener {
 
         repaint();
     }
-
     @Override
     protected void paintComponent(Graphics g) {
 

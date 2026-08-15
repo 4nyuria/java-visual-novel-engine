@@ -7,7 +7,7 @@ import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.engine.Game;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
-
+import com.anyuria.vnengine.dialogue.Dialogue;
 public class Main {
 
     public static void main(String[] args) {
@@ -23,24 +23,37 @@ public class Main {
                 "/characters/other.png",
                 CharacterPosition.RIGHT
         );
+        Dialogue dialogue1 = new Dialogue(
+                protagonist,
+                "¿Dónde estoy?"
+        );
+        Dialogue dialogue2 = new Dialogue(
+                otherCharacter,
+                "No lo sé..."
+        );
+
+        Dialogue dialogue3 = new Dialogue(
+                protagonist,
+                "Entonces tendremos que averiguarlo."
+        );
+        
         Scene scene1 = new Scene(
                 1,
-                "Una noche tranquila...",
+                Arrays.asList(dialogue1,
+                		dialogue2),
                 "/backgrounds/room.jpg",
                 Arrays.asList(protagonist)
         );
 
         Scene scene2 = new Scene(
-                2,
-                "La protagonista mira por la ventana.",
+                2,Arrays.asList(),
                 "/backgrounds/window.jpeg",
                 Arrays.asList(protagonist,
                 		otherCharacter)
         );
 
         Scene scene3 = new Scene(
-                3,
-                "De repente, escucha un ruido.",
+                3,Arrays.asList(dialogue3),
                 "/backgrounds/street.jpeg",
                 Arrays.asList(protagonist,
                 		otherCharacter)
