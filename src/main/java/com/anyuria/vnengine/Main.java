@@ -34,7 +34,12 @@ public class Main {
 
         Dialogue dialogue3 = new Dialogue(
                 protagonist,
-                "Entonces tendremos que averiguarlo."
+                "Entonces Este es un texto bastante"
+                + " largo para comprobar que el"
+                + " motor puede "
+                + "dividir automáticamente el diálogo"
+                + " en varias líneas sin que el texto "
+                + "se salga de la caja xddd676767"
         );
         
         Scene scene1 = new Scene(

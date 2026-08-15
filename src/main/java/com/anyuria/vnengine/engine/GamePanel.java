@@ -181,6 +181,55 @@ public class GamePanel extends JPanel implements KeyListener {
         repaint();
     }
     
+    private void drawWrappedText(
+            Graphics2D g2,
+            String text,
+            int x,
+            int y,
+            int maxWidth
+    ) {
+
+        String[] words = text.split(" ");
+
+        String line = "";
+        int lineHeight = 30;
+
+        for (String word : words) {
+
+            String testLine = line.isEmpty()
+                    ? word
+                    : line + " " + word;
+
+            int textWidth = g2.getFontMetrics()
+                    .stringWidth(testLine);
+
+            if (textWidth > maxWidth && !line.isEmpty()) {
+
+                g2.drawString(
+                        line,
+                        x,
+                        y
+                );
+
+                line = word;
+                y += lineHeight;
+
+            } else {
+
+                line = testLine;
+            }
+        }
+
+        if (!line.isEmpty()) {
+
+            g2.drawString(
+                    line,
+                    x,
+                    y
+            );
+        }
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -326,10 +375,12 @@ public class GamePanel extends JPanel implements KeyListener {
                     )
             );
 
-            g2.drawString(
+            drawWrappedText(
+                    g2,
                     displayedText,
                     80,
-                    getHeight() - 105
+                    getHeight() - 105,
+                    getWidth() - 160
             );
         }
 
