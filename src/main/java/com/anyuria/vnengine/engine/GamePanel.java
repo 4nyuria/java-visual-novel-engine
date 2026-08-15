@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import com.anyuria.vnengine.engine.resource.ResourceLoader;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
+import com.anyuria.vnengine.character.CharacterPosition;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -43,6 +44,8 @@ public class GamePanel extends JPanel implements KeyListener {
         requestFocusInWindow();
         
         loadBackground();
+        
+        loadCharacter();
 
         startText();
     }
@@ -180,7 +183,26 @@ public class GamePanel extends JPanel implements KeyListener {
             int characterWidth = 400;
             int characterHeight = 600;
 
-            int characterX = (getWidth() - characterWidth) / 2;
+            int characterX;
+
+            CharacterPosition position =
+                    sceneManager.getCurrentScene()
+                            .getCharacter()
+                            .getPosition();
+
+            if (position == CharacterPosition.LEFT) {
+
+                characterX = 50;
+
+            } else if (position == CharacterPosition.RIGHT) {
+
+                characterX = getWidth() - characterWidth - 50;
+
+            } else {
+
+                characterX = (getWidth() - characterWidth) / 2;
+            }
+
             int characterY = getHeight() - characterHeight;
 
             g2.drawImage(
@@ -191,7 +213,6 @@ public class GamePanel extends JPanel implements KeyListener {
                     characterHeight,
                     null
             );
-        }
         
         // Escena actual
         Scene currentScene = sceneManager.getCurrentScene();
@@ -228,7 +249,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
         g2.dispose();
     }
-
+    }
     @Override
     public void keyPressed(KeyEvent e) {
 

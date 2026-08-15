@@ -2,6 +2,7 @@ package com.anyuria.vnengine;
 
 import javax.swing.SwingUtilities;
 import com.anyuria.vnengine.character.Character;
+import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.engine.Game;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
@@ -13,7 +14,8 @@ public class Main {
         SceneManager sceneManager = new SceneManager();
         Character protagonist = new Character(
                 "cat",
-                "/characters/cat.png"
+                "/characters/cat.png",
+                CharacterPosition.CENTER
         );
         Scene scene1 = new Scene(
                 1,
