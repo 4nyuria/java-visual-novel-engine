@@ -1,5 +1,8 @@
 package com.anyuria.vnengine;
 
+import javax.swing.SwingUtilities;
+
+import com.anyuria.vnengine.engine.Game;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 
@@ -28,14 +31,8 @@ public class Main {
         sceneManager.addScene(scene2);
         sceneManager.addScene(scene3);
 
-        System.out.println(sceneManager.getCurrentScene().getText());
-
-        sceneManager.nextScene();
-
-        System.out.println(sceneManager.getCurrentScene().getText());
-
-        sceneManager.nextScene();
-
-        System.out.println(sceneManager.getCurrentScene().getText());
+        SwingUtilities.invokeLater(() -> {
+            new Game(sceneManager);
+        });
     }
 }
