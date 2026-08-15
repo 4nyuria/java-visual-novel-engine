@@ -27,7 +27,8 @@ public class GamePanel extends JPanel implements KeyListener {
     
     private BufferedImage backgroundImage;
     
- 
+    private BufferedImage characterImage;
+    
 
     public GamePanel(SceneManager sceneManager) {
 
@@ -44,6 +45,24 @@ public class GamePanel extends JPanel implements KeyListener {
         loadBackground();
 
         startText();
+    }
+    
+    private void loadCharacter() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        if (currentScene.getCharacter() == null) {
+            characterImage = null;
+            return;
+        }
+
+        characterImage = ResourceLoader.loadImage(
+                currentScene.getCharacter().getImagePath()
+        );
     }
     private void loadBackground() {
 
