@@ -1,25 +1,26 @@
 package com.anyuria.vnengine.scene;
 
 import com.anyuria.vnengine.character.Character;
+import java.util.List;
 
 public class Scene {
 
     private int id;
     private String text;
     private String backgroundPath;
-    private Character character;
+    private List<Character> characters;
 
     public Scene(
             int id,
             String text,
             String backgroundPath,
-            Character character
+            List<Character> characters
     ) {
 
         this.id = id;
         this.text = text;
         this.backgroundPath = backgroundPath;
-        this.character = character;
+        this.characters = characters;
     }
 
     public int getId() {
@@ -34,7 +35,7 @@ public class Scene {
         return backgroundPath;
     }
 
-    public Character getCharacter() {
-        return character;
+    public List<Character> getCharacters() {
+        return characters;
     }
 }

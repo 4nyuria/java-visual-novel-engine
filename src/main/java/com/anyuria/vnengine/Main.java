@@ -1,6 +1,7 @@
 package com.anyuria.vnengine;
 
 import javax.swing.SwingUtilities;
+import java.util.Arrays;
 import com.anyuria.vnengine.character.Character;
 import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.engine.Game;
@@ -17,25 +18,32 @@ public class Main {
                 "/characters/cat.png",
                 CharacterPosition.CENTER
         );
+        Character otherCharacter = new Character(
+                "other",
+                "/characters/other.png",
+                CharacterPosition.RIGHT
+        );
         Scene scene1 = new Scene(
                 1,
                 "Una noche tranquila...",
                 "/backgrounds/room.jpg",
-                protagonist
+                Arrays.asList(protagonist)
         );
 
         Scene scene2 = new Scene(
                 2,
                 "La protagonista mira por la ventana.",
                 "/backgrounds/window.jpeg",
-                protagonist
+                Arrays.asList(protagonist,
+                		otherCharacter)
         );
 
         Scene scene3 = new Scene(
                 3,
                 "De repente, escucha un ruido.",
                 "/backgrounds/street.jpeg",
-                protagonist
+                Arrays.asList(protagonist,
+                		otherCharacter)
         );
 
         sceneManager.addScene(scene1);
