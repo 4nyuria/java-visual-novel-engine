@@ -6,10 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+//para timer de texto
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
+import java.awt.image.BufferedImage;
+import com.anyuria.vnengine.engine.resource.ResourceLoader;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 
@@ -23,6 +24,8 @@ public class GamePanel extends JPanel implements KeyListener {
     private int characterIndex = 0;
 
     private Timer textTimer;
+    
+    private BufferedImage backgroundImage;
 
     public GamePanel(SceneManager sceneManager) {
 
@@ -35,6 +38,11 @@ public class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
 
         requestFocusInWindow();
+        
+        backgroundImage = ResourceLoader.loadImage(
+                "/backgrounds/room.jpg"
+        );
+
 
         startText();
     }
@@ -51,8 +59,10 @@ public class GamePanel extends JPanel implements KeyListener {
         characterIndex = 0;
 
         String text = currentScene.getText();
+        
 
         textTimer = new Timer(50, e -> {
+        	//timer del texto para efecto maquina de escribir
 
             if (characterIndex < text.length()) {
 
@@ -109,21 +119,34 @@ public class GamePanel extends JPanel implements KeyListener {
         Graphics2D g2 = (Graphics2D) g;
 
         // Fondo
-        g2.setColor(Color.DARK_GRAY);
+        if (backgroundImage != null) {
 
-        g2.fillRect(
-                0,
-                0,
-                getWidth(),
-                getHeight()
-        );
+            g2.drawImage(
+            		backgroundImage,
+                    0,
+                    0,
+                    getWidth(),
+                    getHeight(),
+                    null
+            );
 
+        } else {
+
+            g2.setColor(Color.DARK_GRAY);
+
+            g2.fillRect(
+                    0,
+                    0,
+                    getWidth(),
+                    getHeight()
+            );
+        }
         // Escena actual
         Scene currentScene = sceneManager.getCurrentScene();
 
         if (currentScene != null) {
 
-            // Caja de diálogo
+            // Caja de dialogos
             g2.setColor(new Color(0, 0, 0, 200));
 
             g2.fillRect(
@@ -160,7 +183,7 @@ public class GamePanel extends JPanel implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_SPACE
                 || e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            // Si el texto todavía se está escribiendo
+            // si todavia hay texto...
             if (!isTextComplete()) {
 
                 finishText();
@@ -168,7 +191,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 return;
             }
 
-            // Si el texto ya terminó, pasar a la siguiente escena
+            // si se termino, pasar a la otra escena
             if (sceneManager.hasNextScene()) {
 
                 sceneManager.nextScene();
@@ -182,11 +205,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // No necesitamos utilizar este método.
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // No necesitamos utilizar este método.
     }
 }
