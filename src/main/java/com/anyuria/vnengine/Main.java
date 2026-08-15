@@ -1,19 +1,41 @@
 package com.anyuria.vnengine;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.anyuria.vnengine.scene.Scene;
+import com.anyuria.vnengine.scene.SceneManager;
 
-public class Main extends Application {
-
-    @Override
-    public void start(Stage stage) {
-
-        stage.setTitle("Java Visual Novel Engine");
-
-        stage.show();
-    }
+public class Main {
 
     public static void main(String[] args) {
-        launch();
+
+        SceneManager sceneManager = new SceneManager();
+
+        Scene scene1 = new Scene(
+                1,
+                "Una noche tranquila..."
+        );
+
+        Scene scene2 = new Scene(
+                2,
+                "La protagonista mira por la ventana."
+        );
+
+        Scene scene3 = new Scene(
+                3,
+                "De repente, escucha un ruido."
+        );
+
+        sceneManager.addScene(scene1);
+        sceneManager.addScene(scene2);
+        sceneManager.addScene(scene3);
+
+        System.out.println(sceneManager.getCurrentScene().getText());
+
+        sceneManager.nextScene();
+
+        System.out.println(sceneManager.getCurrentScene().getText());
+
+        sceneManager.nextScene();
+
+        System.out.println(sceneManager.getCurrentScene().getText());
     }
 }
