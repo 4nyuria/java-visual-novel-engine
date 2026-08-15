@@ -30,8 +30,12 @@ public class GamePanel extends JPanel implements KeyListener {
     private String displayedText = "";
     private int characterIndex = 0;
     private int dialogueIndex = 0;
+    
+    private boolean showContinueIndicator = false;
+    private boolean indicatorVisible = true;
 
     private Timer textTimer;
+    private Timer indicatorTimer;
     
     private BufferedImage backgroundImage;
     
@@ -55,6 +59,7 @@ public class GamePanel extends JPanel implements KeyListener {
         loadCharacters();
 
         startText();
+        startIndicatorAnimation();
         
         repaint();
     }
@@ -109,6 +114,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
         displayedText = "";
         characterIndex = 0;
+        
+        showContinueIndicator = false;
+        indicatorVisible = true;
 
         String text = currentScene
                 .getDialogues()
@@ -129,6 +137,9 @@ public class GamePanel extends JPanel implements KeyListener {
             } else {
 
                 textTimer.stop();
+                showContinueIndicator = true;
+
+                repaint();
             }
         });
 
@@ -173,7 +184,9 @@ public class GamePanel extends JPanel implements KeyListener {
                 .getText();
 
         characterIndex = displayedText.length();
-
+        
+        showContinueIndicator = true;
+        
         if (textTimer != null) {
             textTimer.stop();
         }
@@ -228,6 +241,20 @@ public class GamePanel extends JPanel implements KeyListener {
                     y
             );
         }
+    }
+    
+    private void startIndicatorAnimation() {
+
+        indicatorTimer = new Timer(500, e -> {
+
+        	if (showContinueIndicator && indicatorVisible) {
+                indicatorVisible = !indicatorVisible;
+
+                repaint();
+            }
+        });
+
+        indicatorTimer.start();
     }
     
     @Override
@@ -382,6 +409,25 @@ public class GamePanel extends JPanel implements KeyListener {
                     getHeight() - 105,
                     getWidth() - 160
             );
+            
+            if (showContinueIndicator) {
+
+                g2.setFont(
+                        new Font(
+                                "Arial",
+                                Font.BOLD,
+                                20
+                        )
+                );
+
+                g2.setColor(Color.WHITE);
+
+                g2.drawString(
+                        "▼",
+                        getWidth() - 85,
+                        getHeight() - 75
+                );
+            }
         }
 
         g2.dispose();
