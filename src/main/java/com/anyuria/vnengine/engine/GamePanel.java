@@ -180,6 +180,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
         repaint();
     }
+    
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -279,7 +280,42 @@ public class GamePanel extends JPanel implements KeyListener {
                     120
             );
 
-            // Texto
+         // Nombre del personaje
+            if (!currentScene.getDialogues().isEmpty()) {
+
+            	String speakerName = "";
+
+            	if (currentScene
+            	        .getDialogues()
+            	        .get(dialogueIndex)
+            	        .getSpeaker() != null) {
+
+            	    speakerName = currentScene
+            	            .getDialogues()
+            	            .get(dialogueIndex)
+            	            .getSpeaker()
+            	            .getName();
+            	}
+
+                g2.setColor(Color.WHITE);
+
+                g2.setFont(
+                        new Font(
+                                "Arial",
+                                Font.BOLD,
+                                20
+                        )
+                );
+
+                g2.drawString(
+                        speakerName,
+                        80,
+                        getHeight() - 145
+                );
+            }
+
+
+            // Texto del diálogo
             g2.setColor(Color.WHITE);
 
             g2.setFont(
@@ -293,11 +329,22 @@ public class GamePanel extends JPanel implements KeyListener {
             g2.drawString(
                     displayedText,
                     80,
-                    getHeight() - 120
+                    getHeight() - 105
             );
         }
 
         g2.dispose();
+    }
+    
+    private boolean hasNextDialogue() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return false;
+        }
+
+        return dialogueIndex < currentScene.getDialogues().size() - 1;
     }
     
     @Override
@@ -306,7 +353,7 @@ public class GamePanel extends JPanel implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_SPACE
                 || e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-            // si todavia hay texto...
+            // Si el texto todavía se está escribiendo
             if (!isTextComplete()) {
 
                 finishText();
@@ -314,15 +361,29 @@ public class GamePanel extends JPanel implements KeyListener {
                 return;
             }
 
-            // si se termino, pasar a la otra escena
+            // Si hay otro diálogo dentro de la escena
+            if (hasNextDialogue()) {
+
+                dialogueIndex++;
+
+                startText();
+
+                repaint();
+
+                return;
+            }
+
+            // Si no hay más diálogos, pasar a la siguiente escena
             if (sceneManager.hasNextScene()) {
 
                 sceneManager.nextScene();
 
+                dialogueIndex = 0;
+
                 loadBackground();
-                
+
                 loadCharacters();
-                
+
                 startText();
 
                 repaint();
