@@ -4,10 +4,13 @@ public class Scene {
 
     private int id;
     private String text;
+    private String backgroundPath;
 
-    public Scene(int id, String text) {
+    public Scene(int id, String text, String backgroundPath) {
+
         this.id = id;
         this.text = text;
+        this.backgroundPath = backgroundPath;
     }
 
     public int getId() {
@@ -16,5 +19,9 @@ public class Scene {
 
     public String getText() {
         return text;
+    }
+
+    public String getBackgroundPath() {
+        return backgroundPath;
     }
 }

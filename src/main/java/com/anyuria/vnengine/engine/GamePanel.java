@@ -26,6 +26,8 @@ public class GamePanel extends JPanel implements KeyListener {
     private Timer textTimer;
     
     private BufferedImage backgroundImage;
+    
+ 
 
     public GamePanel(SceneManager sceneManager) {
 
@@ -39,14 +41,22 @@ public class GamePanel extends JPanel implements KeyListener {
 
         requestFocusInWindow();
         
-        backgroundImage = ResourceLoader.loadImage(
-                "/backgrounds/room.jpg"
-        );
-
+        loadBackground();
 
         startText();
     }
+    private void loadBackground() {
 
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        backgroundImage = ResourceLoader.loadImage(
+                currentScene.getBackgroundPath()
+        );
+    }
     private void startText() {
 
         Scene currentScene = sceneManager.getCurrentScene();
@@ -196,6 +206,8 @@ public class GamePanel extends JPanel implements KeyListener {
 
                 sceneManager.nextScene();
 
+                loadBackground();
+                
                 startText();
 
                 repaint();

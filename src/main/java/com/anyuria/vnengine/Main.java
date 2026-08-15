@@ -14,17 +14,20 @@ public class Main {
 
         Scene scene1 = new Scene(
                 1,
-                "Una noche tranquila..."
+                "Una noche tranquila...",
+                "/backgrounds/room.jpg"
         );
 
         Scene scene2 = new Scene(
                 2,
-                "La protagonista mira por la ventana."
+                "La protagonista mira por la ventana.",
+                "/backgrounds/window.jpeg"
         );
 
         Scene scene3 = new Scene(
                 3,
-                "De repente, escucha un ruido."
+                "De repente, escucha un ruido.",
+                "/backgrounds/street.jpeg"
         );
 
         sceneManager.addScene(scene1);
