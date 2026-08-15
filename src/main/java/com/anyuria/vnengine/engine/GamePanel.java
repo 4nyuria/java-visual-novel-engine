@@ -47,6 +47,20 @@ public class GamePanel extends JPanel implements KeyListener {
         startText();
     }
     
+
+    private void loadBackground() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        backgroundImage = ResourceLoader.loadImage(
+                currentScene.getBackgroundPath()
+        );
+    }
+    
     private void loadCharacter() {
 
         Scene currentScene = sceneManager.getCurrentScene();
@@ -64,18 +78,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 currentScene.getCharacter().getImagePath()
         );
     }
-    private void loadBackground() {
-
-        Scene currentScene = sceneManager.getCurrentScene();
-
-        if (currentScene == null) {
-            return;
-        }
-
-        backgroundImage = ResourceLoader.loadImage(
-                currentScene.getBackgroundPath()
-        );
-    }
+    
     private void startText() {
 
         Scene currentScene = sceneManager.getCurrentScene();
@@ -170,6 +173,26 @@ public class GamePanel extends JPanel implements KeyListener {
                     getHeight()
             );
         }
+        
+     // Personaje
+        if (characterImage != null) {
+
+            int characterWidth = 400;
+            int characterHeight = 600;
+
+            int characterX = (getWidth() - characterWidth) / 2;
+            int characterY = getHeight() - characterHeight;
+
+            g2.drawImage(
+                    characterImage,
+                    characterX,
+                    characterY,
+                    characterWidth,
+                    characterHeight,
+                    null
+            );
+        }
+        
         // Escena actual
         Scene currentScene = sceneManager.getCurrentScene();
 
@@ -226,6 +249,8 @@ public class GamePanel extends JPanel implements KeyListener {
                 sceneManager.nextScene();
 
                 loadBackground();
+                
+                loadCharacter();
                 
                 startText();
 
