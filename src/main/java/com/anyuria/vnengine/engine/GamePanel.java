@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
@@ -17,6 +18,11 @@ public class GamePanel extends JPanel implements KeyListener {
     private static final long serialVersionUID = 1L;
 
     private SceneManager sceneManager;
+
+    private String displayedText = "";
+    private int characterIndex = 0;
+
+    private Timer textTimer;
 
     public GamePanel(SceneManager sceneManager) {
 
@@ -29,6 +35,70 @@ public class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
 
         requestFocusInWindow();
+
+        startText();
+    }
+
+    private void startText() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        displayedText = "";
+        characterIndex = 0;
+
+        String text = currentScene.getText();
+
+        textTimer = new Timer(50, e -> {
+
+            if (characterIndex < text.length()) {
+
+                displayedText += text.charAt(characterIndex);
+
+                characterIndex++;
+
+                repaint();
+
+            } else {
+
+                textTimer.stop();
+            }
+        });
+
+        textTimer.start();
+    }
+
+    private boolean isTextComplete() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return true;
+        }
+
+        return characterIndex >= currentScene.getText().length();
+    }
+
+    private void finishText() {
+
+        Scene currentScene = sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        displayedText = currentScene.getText();
+
+        characterIndex = displayedText.length();
+
+        if (textTimer != null) {
+            textTimer.stop();
+        }
+
+        repaint();
     }
 
     @Override
@@ -38,11 +108,17 @@ public class GamePanel extends JPanel implements KeyListener {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        // Fondo de prueba
+        // Fondo
         g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(0, 0, getWidth(), getHeight());
 
-        // Obtener escena actual
+        g2.fillRect(
+                0,
+                0,
+                getWidth(),
+                getHeight()
+        );
+
+        // Escena actual
         Scene currentScene = sceneManager.getCurrentScene();
 
         if (currentScene != null) {
@@ -60,10 +136,16 @@ public class GamePanel extends JPanel implements KeyListener {
             // Texto
             g2.setColor(Color.WHITE);
 
-            g2.setFont(new Font("Arial", Font.PLAIN, 24));
+            g2.setFont(
+                    new Font(
+                            "Arial",
+                            Font.PLAIN,
+                            24
+                    )
+            );
 
             g2.drawString(
-                    currentScene.getText(),
+                    displayedText,
                     80,
                     getHeight() - 120
             );
@@ -78,9 +160,20 @@ public class GamePanel extends JPanel implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_SPACE
                 || e.getKeyCode() == KeyEvent.VK_ENTER) {
 
+            // Si el texto todavía se está escribiendo
+            if (!isTextComplete()) {
+
+                finishText();
+
+                return;
+            }
+
+            // Si el texto ya terminó, pasar a la siguiente escena
             if (sceneManager.hasNextScene()) {
 
                 sceneManager.nextScene();
+
+                startText();
 
                 repaint();
             }
