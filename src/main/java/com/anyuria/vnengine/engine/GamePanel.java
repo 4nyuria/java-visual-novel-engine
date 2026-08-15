@@ -4,13 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +23,12 @@ public class GamePanel extends JPanel {
         this.sceneManager = sceneManager;
 
         setBackground(Color.BLACK);
+
+        setFocusable(true);
+
+        addKeyListener(this);
+
+        requestFocusInWindow();
     }
 
     @Override
@@ -39,7 +47,7 @@ public class GamePanel extends JPanel {
 
         if (currentScene != null) {
 
-            // Caja de diálogo :3
+            // Caja de diálogo
             g2.setColor(new Color(0, 0, 0, 200));
 
             g2.fillRect(
@@ -62,5 +70,30 @@ public class GamePanel extends JPanel {
         }
 
         g2.dispose();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE
+                || e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            if (sceneManager.hasNextScene()) {
+
+                sceneManager.nextScene();
+
+                repaint();
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // No necesitamos utilizar este método.
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // No necesitamos utilizar este método.
     }
 }
