@@ -346,49 +346,67 @@ public class GamePanel extends JPanel implements KeyListener {
         // Escena actual
         if (currentScene != null) {
 
-            // Caja de dialogos
-            g2.setColor(new Color(0, 0, 0, 200));
+        	// Caja principal de diálogo
+        	int dialogueBoxX = 50;
+        	int dialogueBoxY = getHeight() - 180;
+        	int dialogueBoxWidth = getWidth() - 100;
+        	int dialogueBoxHeight = 120;
 
-            g2.fillRect(
-                    50,
-                    getHeight() - 180,
-                    getWidth() - 100,
-                    120
-            );
+        	g2.setColor(new Color(0, 0, 0, 210));
 
-         // Nombre del personaje
-            if (!currentScene.getDialogues().isEmpty()) {
+        	g2.fillRoundRect(
+        	        dialogueBoxX,
+        	        dialogueBoxY,
+        	        dialogueBoxWidth,
+        	        dialogueBoxHeight,
+        	        20,
+        	        20
+        	);
+        	
+        	// Placa del nombre
+        	if (!currentScene.getDialogues().isEmpty()
+        	        && currentScene.getDialogues()
+        	                .get(dialogueIndex)
+        	                .getSpeaker() != null) {
 
-            	String speakerName = "";
+        	    String speakerName = currentScene
+        	            .getDialogues()
+        	            .get(dialogueIndex)
+        	            .getSpeaker()
+        	            .getName();
 
-            	if (currentScene
-            	        .getDialogues()
-            	        .get(dialogueIndex)
-            	        .getSpeaker() != null) {
+        	    int nameBoxX = 70;
+        	    int nameBoxY = dialogueBoxY - 25;
+        	    int nameBoxWidth = 180;
+        	    int nameBoxHeight = 40;
 
-            	    speakerName = currentScene
-            	            .getDialogues()
-            	            .get(dialogueIndex)
-            	            .getSpeaker()
-            	            .getName();
-            	}
+        	    g2.setColor(new Color(30, 30, 30, 230));
 
-                g2.setColor(Color.WHITE);
+        	    g2.fillRoundRect(
+        	            nameBoxX,
+        	            nameBoxY,
+        	            nameBoxWidth,
+        	            nameBoxHeight,
+        	            15,
+        	            15
+        	    );
 
-                g2.setFont(
-                        new Font(
-                                "Arial",
-                                Font.BOLD,
-                                20
-                        )
-                );
+        	    g2.setColor(Color.WHITE);
 
-                g2.drawString(
-                        speakerName,
-                        80,
-                        getHeight() - 145
-                );
-            }
+        	    g2.setFont(
+        	            new Font(
+        	                    "Arial",
+        	                    Font.BOLD,
+        	                    18
+        	            )
+        	    );
+
+        	    g2.drawString(
+        	            speakerName,
+        	            nameBoxX + 15,
+        	            nameBoxY + 26
+        	    );
+        	}
 
 
             // Texto del diálogo
@@ -406,11 +424,11 @@ public class GamePanel extends JPanel implements KeyListener {
                     g2,
                     displayedText,
                     80,
-                    getHeight() - 105,
+                    getHeight() - 120,
                     getWidth() - 160
             );
             
-            if (showContinueIndicator) {
+            if (showContinueIndicator&& indicatorVisible) {
 
                 g2.setFont(
                         new Font(
@@ -427,12 +445,12 @@ public class GamePanel extends JPanel implements KeyListener {
                         getWidth() - 85,
                         getHeight() - 75
                 );
+                }
             }
-        }
-
-        g2.dispose();
+     
     }
-    
+
+   
     private boolean hasNextDialogue() {
 
         Scene currentScene = sceneManager.getCurrentScene();
