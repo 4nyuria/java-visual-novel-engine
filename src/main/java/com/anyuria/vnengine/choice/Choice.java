@@ -5,10 +5,26 @@ public class Choice {
     private String text;
     private int targetSceneId;
 
-    public Choice(String text, int targetSceneId) {
+    private String requiredFlag;
+
+    public Choice(
+            String text,
+            int targetSceneId) {
 
         this.text = text;
         this.targetSceneId = targetSceneId;
+
+        this.requiredFlag = null;
+    }
+
+    public Choice(
+            String text,
+            int targetSceneId,
+            String requiredFlag) {
+
+        this.text = text;
+        this.targetSceneId = targetSceneId;
+        this.requiredFlag = requiredFlag;
     }
 
     public String getText() {
@@ -17,5 +33,9 @@ public class Choice {
 
     public int getTargetSceneId() {
         return targetSceneId;
+    }
+
+    public String getRequiredFlag() {
+        return requiredFlag;
     }
 }

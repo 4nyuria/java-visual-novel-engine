@@ -11,11 +11,13 @@ import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
 
+
 public class Main {
 
     public static void main(String[] args) {
-
+    	
         SceneManager sceneManager = new SceneManager();
+       
         //characters
         Character protagonist = new Character(
                 "cat",
@@ -57,7 +59,8 @@ public class Main {
         scene1.addChoice(
                 new Choice(
                         "Investigar la casa",
-                        2
+                        2,
+                        "foundKey"
                 )
         );
 

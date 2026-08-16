@@ -20,12 +20,13 @@ import com.anyuria.vnengine.engine.resource.ResourceLoader;
 import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.character.CharacterPosition;
-
+import com.anyuria.vnengine.state.GameState;
 public class GamePanel extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
 
     private SceneManager sceneManager;
+    private GameState gameState;
 
     private String displayedText = "";
     private int characterIndex = 0;
@@ -51,10 +52,12 @@ public class GamePanel extends JPanel implements KeyListener {
     private List<BufferedImage> characterImages;
     
 
-    public GamePanel(SceneManager sceneManager) {
+    public GamePanel(SceneManager sceneManager,
+            GameState gameState) {
 
         this.sceneManager = sceneManager;
-
+        this.gameState = gameState;
+        
         setBackground(Color.BLACK);
 
         setFocusable(true);
@@ -324,26 +327,61 @@ public class GamePanel extends JPanel implements KeyListener {
    
     private void selectChoice() {
 
-        Scene currentScene =
-                sceneManager.getCurrentScene();
+        List<com.anyuria.vnengine.choice.Choice> choices =
+                getAvailableChoices();
 
-        if (currentScene == null) {
+        if (choices.isEmpty()) {
             return;
         }
 
-        if (currentScene.getChoices().isEmpty()) {
-            return;
+        if (selectedChoice >= choices.size()) {
+            selectedChoice = 0;
         }
 
         int targetSceneId =
-                currentScene
-                        .getChoices()
+                choices
                         .get(selectedChoice)
                         .getTargetSceneId();
 
         showingChoices = false;
 
         startSceneTransition(targetSceneId);
+    }
+    
+    private boolean isChoiceAvailable(com.anyuria.vnengine.choice.Choice choice) {
+
+        String requiredFlag =
+                choice.getRequiredFlag();
+
+        if (requiredFlag == null) {
+            return true;
+        }
+
+        return gameState.getFlag(requiredFlag);
+    }
+    
+    private List<com.anyuria.vnengine.choice.Choice> getAvailableChoices() {
+
+        List<com.anyuria.vnengine.choice.Choice> available =
+                new ArrayList<>();
+
+        Scene currentScene =
+                sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return available;
+        }
+
+        for (com.anyuria.vnengine.choice.Choice choice
+                : currentScene.getChoices()) {
+
+            if (isChoiceAvailable(choice)) {
+
+                available.add(choice);
+            }
+        }
+
+        return available;
     }
     
     @Override
@@ -591,12 +629,21 @@ public class GamePanel extends JPanel implements KeyListener {
             int startX = 100;
             int startY = 150;
 
+            int visibleChoiceIndex = 0;
+
             for (int i = 0; i < choices.size(); i++) {
 
-                int y = startY + (i * 65);
+                com.anyuria.vnengine.choice.Choice choice =
+                        choices.get(i);
+
+                if (!isChoiceAvailable(choice)) {
+                    continue;
+                }
+
+                int y = startY + (visibleChoiceIndex * 65);
 
                 // Fondo de la opción
-                if (i == selectedChoice) {
+                if (visibleChoiceIndex == selectedChoice) {
 
                     g2.setColor(
                             new Color(80, 80, 80, 230)
@@ -629,14 +676,13 @@ public class GamePanel extends JPanel implements KeyListener {
                         )
                 );
 
-                String choiceText =
-                        choices.get(i).getText();
-
                 g2.drawString(
-                        choiceText,
+                        choice.getText(),
                         startX + 20,
                         y + 32
                 );
+
+                visibleChoiceIndex++;
             }
         }
         
@@ -681,22 +727,19 @@ public class GamePanel extends JPanel implements KeyListener {
     	//navegador de opciones
     	if (showingChoices) {
 
-    	    Scene currentScene =
-    	            sceneManager.getCurrentScene();
+    	    List<com.anyuria.vnengine.choice.Choice> choices =
+    	            getAvailableChoices();
 
-    	    if (currentScene == null) {
+    	    if (choices.isEmpty()) {
     	        return;
     	    }
-
-    	    int choiceCount =
-    	            currentScene.getChoices().size();
 
     	    if (e.getKeyCode() == KeyEvent.VK_UP) {
 
     	        selectedChoice--;
 
     	        if (selectedChoice < 0) {
-    	            selectedChoice = choiceCount - 1;
+    	            selectedChoice = choices.size() - 1;
     	        }
 
     	        repaint();
@@ -708,7 +751,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     	        selectedChoice++;
 
-    	        if (selectedChoice >= choiceCount) {
+    	        if (selectedChoice >= choices.size()) {
     	            selectedChoice = 0;
     	        }
 
