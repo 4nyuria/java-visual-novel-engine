@@ -31,6 +31,9 @@ public class GamePanel extends JPanel implements KeyListener {
     private int characterIndex = 0;
     private int dialogueIndex = 0;
     
+    private int selectedChoice = 0;
+    private boolean showingChoices = false;
+    
     private boolean showContinueIndicator = false;
     private boolean indicatorVisible = true;
 
@@ -318,6 +321,41 @@ public class GamePanel extends JPanel implements KeyListener {
         transitionTimer.start();
     }
    
+    private void selectChoice() {
+
+        Scene currentScene =
+                sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        if (currentScene.getChoices().isEmpty()) {
+            return;
+        }
+
+        int targetSceneId =
+                currentScene
+                        .getChoices()
+                        .get(selectedChoice)
+                        .getTargetSceneId();
+
+        showingChoices = false;
+
+        // Buscar la escena correspondiente
+        if (sceneManager.goToScene(targetSceneId)) {
+
+            loadBackground();
+            loadCharacters();
+
+            dialogueIndex = 0;
+
+            startText();
+
+            repaint();
+        }
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -549,6 +587,69 @@ public class GamePanel extends JPanel implements KeyListener {
                 }
             }
         
+     // Opciones
+        if (showingChoices
+                && currentScene != null
+                && !currentScene.getChoices().isEmpty()) {
+
+            List<com.anyuria.vnengine.choice.Choice> choices =
+                    currentScene.getChoices();
+
+            int choiceWidth = getWidth() - 200;
+            int choiceHeight = 50;
+
+            int startX = 100;
+            int startY = 150;
+
+            for (int i = 0; i < choices.size(); i++) {
+
+                int y = startY + (i * 65);
+
+                // Fondo de la opción
+                if (i == selectedChoice) {
+
+                    g2.setColor(
+                            new Color(80, 80, 80, 230)
+                    );
+
+                } else {
+
+                    g2.setColor(
+                            new Color(0, 0, 0, 200)
+                    );
+                }
+
+                g2.fillRoundRect(
+                        startX,
+                        y,
+                        choiceWidth,
+                        choiceHeight,
+                        15,
+                        15
+                );
+
+                // Texto
+                g2.setColor(Color.WHITE);
+
+                g2.setFont(
+                        new Font(
+                                "Arial",
+                                Font.PLAIN,
+                                22
+                        )
+                );
+
+                String choiceText =
+                        choices.get(i).getText();
+
+                g2.drawString(
+                        choiceText,
+                        startX + 20,
+                        y + 32
+                );
+            }
+        }
+        
 	     //Transición
 	        if (transitioning) {
 	
@@ -586,7 +687,57 @@ public class GamePanel extends JPanel implements KeyListener {
     
     @Override
     public void keyPressed(KeyEvent e) {
+    	
+    	//navegador de opciones
+    	if (showingChoices) {
 
+    	    Scene currentScene =
+    	            sceneManager.getCurrentScene();
+
+    	    if (currentScene == null) {
+    	        return;
+    	    }
+
+    	    int choiceCount =
+    	            currentScene.getChoices().size();
+
+    	    if (e.getKeyCode() == KeyEvent.VK_UP) {
+
+    	        selectedChoice--;
+
+    	        if (selectedChoice < 0) {
+    	            selectedChoice = choiceCount - 1;
+    	        }
+
+    	        repaint();
+
+    	        return;
+    	    }
+
+    	    if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+
+    	        selectedChoice++;
+
+    	        if (selectedChoice >= choiceCount) {
+    	            selectedChoice = 0;
+    	        }
+
+    	        repaint();
+
+    	        return;
+    	    }
+
+    	    if (e.getKeyCode() == KeyEvent.VK_ENTER
+    	            || e.getKeyCode() == KeyEvent.VK_SPACE) {
+
+    	        selectChoice();
+
+    	        return;
+    	    }
+    	}
+    	
+    	//para saltar cinematica o texto
+    	
         if (e.getKeyCode() == KeyEvent.VK_SPACE
                 || e.getKeyCode() == KeyEvent.VK_ENTER) {
 
@@ -597,7 +748,21 @@ public class GamePanel extends JPanel implements KeyListener {
 
                 return;
             }
+            
+            Scene currentScene = sceneManager.getCurrentScene();
+            
+            //opciones
+            if (currentScene != null
+                    && !currentScene.getChoices().isEmpty()) {
 
+                showingChoices = true;
+                selectedChoice = 0;
+
+                repaint();
+
+                return;
+            }
+            
             // Si hay otro diálogo dentro de la escena
             if (hasNextDialogue()) {
 

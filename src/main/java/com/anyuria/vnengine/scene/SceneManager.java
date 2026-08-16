@@ -34,4 +34,19 @@ public class SceneManager {
     public boolean hasNextScene() {
         return currentSceneIndex < scenes.size() - 1;
     }
+
+    public boolean goToScene(int sceneId) {
+
+        for (int i = 0; i < scenes.size(); i++) {
+
+            if (scenes.get(i).getId() == sceneId) {
+
+                currentSceneIndex = i;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
