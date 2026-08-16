@@ -3,6 +3,8 @@ package com.anyuria.vnengine;
 import javax.swing.SwingUtilities;
 
 import java.util.Arrays;
+import java.util.List;
+
 import com.anyuria.vnengine.character.Character;
 import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.engine.Game;
@@ -12,10 +14,22 @@ import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
 import com.anyuria.vnengine.action.SetFlagAction;
 import com.anyuria.vnengine.item.Item;
+import com.anyuria.vnengine.loader.StoryLoader;
 import com.anyuria.vnengine.action.AddItemAction;
 public class Main {
 
     public static void main(String[] args) {
+    
+    	StoryLoader storyLoader = new StoryLoader();
+
+    	List<Scene> loadedScenes =
+    	        storyLoader.loadScenes();
+
+    	System.out.println(
+    	        "Escenas creadas: "
+    	        + loadedScenes.size()
+    	);
+    	
         SceneManager sceneManager = new SceneManager();
         //items
         Item key = new Item(

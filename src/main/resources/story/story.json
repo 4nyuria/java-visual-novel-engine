@@ -1,0 +1,18 @@
+{
+    "scenes": [
+        {
+            "id": 1,
+            "background": "/backgrounds/room.jpg",
+            "dialogues": [
+                {
+                    "speaker": "cat",
+                    "text": "¿Dónde estoy?"
+                },
+                {
+                    "speaker": "other",
+                    "text": "No lo sé..."
+                }
+            ]
+        }
+    ]
+}
