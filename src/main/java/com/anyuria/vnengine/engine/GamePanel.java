@@ -267,7 +267,7 @@ public class GamePanel extends JPanel implements KeyListener {
     }
     
     
-    private void startSceneTransition() {
+    private void startSceneTransition(int targetSceneId) {
 
         if (transitioning) {
             return;
@@ -281,20 +281,21 @@ public class GamePanel extends JPanel implements KeyListener {
 
             if (fadingOut) {
 
-                transitionAlpha += 0.08f;
+                transitionAlpha += 0.15f;
 
                 if (transitionAlpha >= 1f) {
 
                     transitionAlpha = 1f;
 
-                    // Cambiar escena
-                    sceneManager.nextScene();
+                    // Cambiar a la escena elegida
+                    sceneManager.goToScene(targetSceneId);
 
-                    // Cargar recursos de la nueva escena
+                    // Cargar recursos
                     loadBackground();
                     loadCharacters();
 
                     dialogueIndex = 0;
+                    selectedChoice = 0;
 
                     startText();
 
@@ -302,7 +303,7 @@ public class GamePanel extends JPanel implements KeyListener {
                 }
 
             } else {
-            	//velocidad de la transicion mientras +nº +rapido xd
+
                 transitionAlpha -= 0.15f;
 
                 if (transitionAlpha <= 0f) {
@@ -342,18 +343,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
         showingChoices = false;
 
-        // Buscar la escena correspondiente
-        if (sceneManager.goToScene(targetSceneId)) {
-
-            loadBackground();
-            loadCharacters();
-
-            dialogueIndex = 0;
-
-            startText();
-
-            repaint();
-        }
+        startSceneTransition(targetSceneId);
     }
     
     @Override
@@ -778,7 +768,12 @@ public class GamePanel extends JPanel implements KeyListener {
             // Si no hay más diálogos, pasar a la siguiente escena
             if (sceneManager.hasNextScene()) {
 
-                startSceneTransition();
+                int nextSceneId =
+                        sceneManager
+                                .getCurrentScene()
+                                .getId() + 1;
+
+                startSceneTransition(nextSceneId);
             }
         }
     }

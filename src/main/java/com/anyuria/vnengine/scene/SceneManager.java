@@ -49,4 +49,14 @@ public class SceneManager {
 
         return false;
     }
+    public int getNextSceneId() {
+
+        if (!hasNextScene()) {
+            return -1;
+        }
+
+        return scenes
+                .get(currentSceneIndex + 1)
+                .getId();
+    }
 }
