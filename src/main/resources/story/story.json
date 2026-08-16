@@ -91,7 +91,18 @@
                 {
                     "type": "addItem",
                     "item": "key"
-                }
+                },
+				{
+				    "type": "setVariable",
+				    "variable": "trust",
+				    "value": 5
+				},
+				{
+				    "type": "addVariable",
+				    "variable": "trust",
+				    "amount": 1
+				}
+				
             ],
 
             "choices": [

@@ -15,6 +15,8 @@ import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.item.Item;
 import com.anyuria.vnengine.choice.Choice;
+import com.anyuria.vnengine.action.SetVariableAction;
+import com.anyuria.vnengine.action.AddVariableAction;
 
 public class StoryLoader {
 
@@ -49,10 +51,7 @@ public class StoryLoader {
             JsonNode root =
                     mapper.readTree(input);
 
-            // ==========================================
             // ITEMS
-            // ==========================================
-
             java.util.Map<String, Item> items =
                     new java.util.HashMap<>();
 
@@ -95,9 +94,7 @@ public class StoryLoader {
                 }
             }
 
-            // ==========================================
             // ESCENAS
-            // ==========================================
 
             JsonNode scenesNode =
                     root.get("scenes");
@@ -123,9 +120,7 @@ public class StoryLoader {
                                 .get("background")
                                 .asText();
 
-                // ==========================================
                 // PERSONAJES
-                // ==========================================
 
                 List<Character> characters =
                         new ArrayList<>();
@@ -168,10 +163,8 @@ public class StoryLoader {
                         characters.add(character);
                     }
                 }
-
-                // ==========================================
+                
                 // DIÁLOGOS
-                // ==========================================
 
                 List<Dialogue> dialogues =
                         new ArrayList<>();
@@ -222,9 +215,7 @@ public class StoryLoader {
                     }
                 }
 
-                // ==========================================
                 // OPCIONES
-                // ==========================================
 
                 List<Choice> choices =
                         new ArrayList<>();
@@ -278,10 +269,7 @@ public class StoryLoader {
                     }
                 }
 
-                // ==========================================
                 // CREAR ESCENA
-                // ==========================================
-
                 Scene scene =
                         new Scene(
                                 id,
@@ -297,9 +285,7 @@ public class StoryLoader {
                     scene.addChoice(choice);
                 }
 
-                // ==========================================
                 // ACCIONES
-                // ==========================================
 
                 JsonNode actionsNode =
                         sceneNode.get("actions");
@@ -316,9 +302,7 @@ public class StoryLoader {
 
                         Action action = null;
 
-                        // ------------------------------
                         // SET FLAG
-                        // ------------------------------
 
                         if (type.equals("setFlag")) {
 
@@ -339,9 +323,7 @@ public class StoryLoader {
                                     );
                         }
 
-                        // ------------------------------
                         // ADD ITEM
-                        // ------------------------------
 
                         else if (type.equals("addItem")) {
 
@@ -361,7 +343,47 @@ public class StoryLoader {
                                         );
                             }
                         }
+                     // ------------------------------
+                     // SET VARIABLE
+                     // ------------------------------
 
+                     else if (type.equals("setVariable")) {
+
+                         String variable =
+                                 actionNode
+                                         .get("variable")
+                                         .asText();
+
+                         int value =
+                                 actionNode
+                                         .get("value")
+                                         .asInt();
+
+                         action =
+                                 new SetVariableAction(
+                                         variable,
+                                         value
+                                 );
+                     }
+                     // ADD VARIABLE
+                     else if (type.equals("addVariable")) {
+
+                         String variable =
+                                 actionNode
+                                         .get("variable")
+                                         .asText();
+
+                         int amount =
+                                 actionNode
+                                         .get("amount")
+                                         .asInt();
+
+                         action =
+                                 new AddVariableAction(
+                                         variable,
+                                         amount
+                                 );
+                     }
                         if (action != null) {
 
                             scene.addAction(action);
