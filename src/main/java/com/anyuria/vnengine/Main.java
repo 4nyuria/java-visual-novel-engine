@@ -11,13 +11,26 @@ import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
 import com.anyuria.vnengine.action.SetFlagAction;
+import com.anyuria.vnengine.item.Item;
+import com.anyuria.vnengine.state.GameState;
 
 public class Main {
 
     public static void main(String[] args) {
-    	
+    	//prueba
+    	GameState testState = new GameState();
+
+    	Item key = new Item(
+    	        "key",
+    	        "Llave",
+    	        "Una vieja llave oxidada."
+    	);
+
+    	testState.addItem(key);
+
+    	System.out.println("¿Tiene la llave? " + testState.hasItem("key"));
         SceneManager sceneManager = new SceneManager();
-       
+        
         //characters
         Character protagonist = new Character(
                 "cat",
