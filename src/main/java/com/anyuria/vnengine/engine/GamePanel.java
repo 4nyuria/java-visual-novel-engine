@@ -36,6 +36,12 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private Timer textTimer;
     private Timer indicatorTimer;
+    private Timer transitionTimer;
+
+    private float transitionAlpha = 0f;
+
+    private boolean transitioning = false;
+    private boolean fadingOut = true;
     
     private BufferedImage backgroundImage;
     
@@ -257,6 +263,61 @@ public class GamePanel extends JPanel implements KeyListener {
         indicatorTimer.start();
     }
     
+    
+    private void startSceneTransition() {
+
+        if (transitioning) {
+            return;
+        }
+
+        transitioning = true;
+        fadingOut = true;
+        transitionAlpha = 0f;
+
+        transitionTimer = new Timer(30, e -> {
+
+            if (fadingOut) {
+
+                transitionAlpha += 0.08f;
+
+                if (transitionAlpha >= 1f) {
+
+                    transitionAlpha = 1f;
+
+                    // Cambiar escena
+                    sceneManager.nextScene();
+
+                    // Cargar recursos de la nueva escena
+                    loadBackground();
+                    loadCharacters();
+
+                    dialogueIndex = 0;
+
+                    startText();
+
+                    fadingOut = false;
+                }
+
+            } else {
+            	//velocidad de la transicion mientras +nº +rapido xd
+                transitionAlpha -= 0.15f;
+
+                if (transitionAlpha <= 0f) {
+
+                    transitionAlpha = 0f;
+
+                    transitioning = false;
+
+                    transitionTimer.stop();
+                }
+            }
+
+            repaint();
+        });
+
+        transitionTimer.start();
+    }
+   
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -487,7 +548,28 @@ public class GamePanel extends JPanel implements KeyListener {
                 );
                 }
             }
-     
+        
+	     //Transición
+	        if (transitioning) {
+	
+	            g2.setColor(
+	                    new Color(
+	                            0,
+	                            0,
+	                            0,
+	                            (int) (transitionAlpha * 255)
+	                    )
+	            );
+	
+	            g2.fillRect(
+	                    0,
+	                    0,
+	                    getWidth(),
+	                    getHeight()
+	            );
+	        }
+	        
+	        g2.dispose();
     }
 
    
@@ -531,17 +613,7 @@ public class GamePanel extends JPanel implements KeyListener {
             // Si no hay más diálogos, pasar a la siguiente escena
             if (sceneManager.hasNextScene()) {
 
-                sceneManager.nextScene();
-
-                dialogueIndex = 0;
-
-                loadBackground();
-
-                loadCharacters();
-
-                startText();
-
-                repaint();
+                startSceneTransition();
             }
         }
     }
