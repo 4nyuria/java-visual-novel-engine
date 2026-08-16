@@ -318,7 +318,29 @@ public class GamePanel extends JPanel implements KeyListener {
 
                     // Cambiar a la escena elegida
                     sceneManager.goToScene(targetSceneId);
+                    
+//prueba
+                    System.out.println(
+                    	    "ESCENA CAMBIADA: "
+                    	    + sceneManager.getCurrentScene().getId()
+                    	);
 
+                    	System.out.println(
+                    	    "DIALOGOS EN ESCENA: "
+                    	    + sceneManager.getCurrentScene().getDialogues().size()
+                    	);
+
+                    	if (!sceneManager.getCurrentScene().getDialogues().isEmpty()) {
+
+                    	    System.out.println(
+                    	        "PRIMER DIALOGO: "
+                    	        + sceneManager.getCurrentScene()
+                    	            .getDialogues()
+                    	            .get(0)
+                    	            .getText()
+                    	    );
+                    	}
+                    	
 	                // Cargar recursos
 	                loadBackground();
 	                loadCharacters();

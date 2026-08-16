@@ -1,8 +1,30 @@
 {
+    "items": [
+        {
+            "id": "key",
+            "name": "Llave",
+            "description": "Una vieja llave oxidada."
+        }
+    ],
+
     "scenes": [
         {
             "id": 1,
             "background": "/backgrounds/room.jpg",
+
+            "characters": [
+                {
+                    "id": "cat",
+                    "image": "/characters/cat.png",
+                    "position": "CENTER"
+                },
+                {
+                    "id": "other",
+                    "image": "/characters/other.png",
+                    "position": "RIGHT"
+                }
+            ],
+
             "dialogues": [
                 {
                     "speaker": "cat",
@@ -11,6 +33,58 @@
                 {
                     "speaker": "other",
                     "text": "No lo sé..."
+                }
+            ],
+
+            "choices": [
+                {
+                    "text": "Investigar la casa",
+                    "targetScene": 2
+                },
+                {
+                    "text": "Salir a la calle",
+                    "targetScene": 3
+                }
+            ]
+        },
+
+        {
+            "id": 2,
+            "background": "/backgrounds/window.jpeg",
+
+            "characters": [
+                {
+                    "id": "cat",
+                    "image": "/characters/cat.png",
+                    "position": "CENTER"
+                },
+                {
+                    "id": "other",
+                    "image": "/characters/other.png",
+                    "position": "RIGHT"
+                }
+            ],
+
+            "dialogues": [
+                {
+                    "speaker": "other",
+                    "text": "Encontraste algo..."
+                },
+                {
+                    "speaker": "cat",
+                    "text": "¡Es una llave!"
+                }
+            ],
+
+            "actions": [
+                {
+                    "type": "setFlag",
+                    "flag": "foundKey",
+                    "value": true
+                },
+                {
+                    "type": "addItem",
+                    "item": "key"
                 }
             ]
         }
