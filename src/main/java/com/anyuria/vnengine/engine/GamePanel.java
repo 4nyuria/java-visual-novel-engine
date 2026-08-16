@@ -21,6 +21,8 @@ import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.state.GameState;
+import com.anyuria.vnengine.action.SetFlagAction;
+
 public class GamePanel extends JPanel implements KeyListener {
 
     private static final long serialVersionUID = 1L;
@@ -67,9 +69,10 @@ public class GamePanel extends JPanel implements KeyListener {
         requestFocusInWindow();
         
         loadBackground();
-        
         loadCharacters();
 
+        executeSceneActions();
+        
         startText();
         startIndicatorAnimation();
         
@@ -109,6 +112,22 @@ public class GamePanel extends JPanel implements KeyListener {
                     );
 
             characterImages.add(image);
+        }
+    }
+    
+    private void executeSceneActions() {
+
+        Scene currentScene =
+                sceneManager.getCurrentScene();
+
+        if (currentScene == null) {
+            return;
+        }
+
+        for (SetFlagAction action
+                : currentScene.getActions()) {
+
+            action.execute(gameState);
         }
     }
     

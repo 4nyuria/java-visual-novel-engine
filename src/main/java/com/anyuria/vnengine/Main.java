@@ -10,7 +10,7 @@ import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
-
+import com.anyuria.vnengine.action.SetFlagAction;
 
 public class Main {
 
@@ -59,8 +59,7 @@ public class Main {
         scene1.addChoice(
                 new Choice(
                         "Investigar la casa",
-                        2,
-                        "foundKey"
+                        2
                 )
         );
 
@@ -71,7 +70,7 @@ public class Main {
                 )
         );
         
-        
+        //otra escena
         
         Scene scene2 = new Scene(
                 2,Arrays.asList(),
@@ -79,11 +78,33 @@ public class Main {
                 Arrays.asList(protagonist,
                 		otherCharacter)
         );
+        //agregar una accion
+        scene2.addAction(
+                new SetFlagAction(
+                        "foundKey",
+                        true
+                )
+        );
+        //despues otra escena
         Scene scene3 = new Scene(
                 3,Arrays.asList(dialogue3),
                 "/backgrounds/street.jpeg",
                 Arrays.asList(protagonist,
                 		otherCharacter)
+        );
+        scene3.addChoice(
+                new Choice(
+                        "Abrir la puerta",
+                        2,
+                        "foundKey"
+                )
+        );
+
+        scene3.addChoice(
+                new Choice(
+                        "Alejarse",
+                        1
+                )
         );
 
 //scene manager

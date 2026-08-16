@@ -5,6 +5,7 @@ import java.util.List;
 import com.anyuria.vnengine.character.Character;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
+import com.anyuria.vnengine.action.SetFlagAction;
 
 public class Scene {
 
@@ -13,6 +14,7 @@ public class Scene {
     private String backgroundPath;
     private List<Character> characters;
     private List<Choice> choices;
+    private List<SetFlagAction> actions;
     
     public Scene(
             int id,
@@ -26,11 +28,13 @@ public class Scene {
         this.backgroundPath = backgroundPath;
         this.characters = new ArrayList<>();
         
+        
         for (Character character : characters) {
             this.characters.add(character);
         }
         
         this.choices = new ArrayList<>();
+        actions = new ArrayList<>();
     }
 
     public int getId() {
@@ -44,8 +48,6 @@ public class Scene {
     public List<Dialogue> getDialogues() {
         return dialogues;
     }
-
-
     
     public void addChoice(Choice choice) {
 
@@ -54,6 +56,16 @@ public class Scene {
     public List<Choice> getChoices() {
 
         return choices;
+    }
+    
+    public void addAction(SetFlagAction action) {
+
+        actions.add(action);
+    }
+    
+    public List<SetFlagAction> getActions() {
+
+        return actions;
     }
     
     public String getBackgroundPath() {
