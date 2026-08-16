@@ -12,25 +12,17 @@ import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
 import com.anyuria.vnengine.action.SetFlagAction;
 import com.anyuria.vnengine.item.Item;
-import com.anyuria.vnengine.state.GameState;
-
+import com.anyuria.vnengine.action.AddItemAction;
 public class Main {
 
     public static void main(String[] args) {
-    	//prueba
-    	GameState testState = new GameState();
-
-    	Item key = new Item(
-    	        "key",
-    	        "Llave",
-    	        "Una vieja llave oxidada."
-    	);
-
-    	testState.addItem(key);
-
-    	System.out.println("¿Tiene la llave? " + testState.hasItem("key"));
         SceneManager sceneManager = new SceneManager();
-        
+        //items
+        Item key = new Item(
+                "key",
+                "Llave",
+                "Una vieja llave oxidada."
+        );
         //characters
         Character protagonist = new Character(
                 "cat",
@@ -75,7 +67,14 @@ public class Main {
                         2
                 )
         );
-
+        scene1.addChoice(
+                new Choice(
+                        "ir a la puerta",
+                        2,
+                        null,
+                        "Key"
+                )
+        );
         scene1.addChoice(
                 new Choice(
                         "Salir a la calle",
@@ -97,6 +96,10 @@ public class Main {
                         "foundKey",
                         true
                 )
+        );
+
+        scene2.addAction(
+                new AddItemAction(key)
         );
         //despues otra escena
         Scene scene3 = new Scene(

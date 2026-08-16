@@ -21,7 +21,8 @@ import com.anyuria.vnengine.scene.Scene;
 import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.state.GameState;
-import com.anyuria.vnengine.action.SetFlagAction;
+import com.anyuria.vnengine.action.Action;
+
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -54,7 +55,8 @@ public class GamePanel extends JPanel implements KeyListener {
     private List<BufferedImage> characterImages;
     
 
-    public GamePanel(SceneManager sceneManager,
+    public GamePanel(
+            SceneManager sceneManager,
             GameState gameState) {
 
         this.sceneManager = sceneManager;
@@ -117,15 +119,20 @@ public class GamePanel extends JPanel implements KeyListener {
     
     private void executeSceneActions() {
 
-        Scene currentScene =
-                sceneManager.getCurrentScene();
+        System.out.println("EJECUTANDO ACCIONES");
+
+        Scene currentScene = sceneManager.getCurrentScene();
 
         if (currentScene == null) {
             return;
         }
 
-        for (SetFlagAction action
-                : currentScene.getActions()) {
+        for (Action action : currentScene.getActions()) {
+
+            System.out.println(
+                    "Acción encontrada: "
+                    + action.getClass().getSimpleName()
+            );
 
             action.execute(gameState);
         }
@@ -312,15 +319,17 @@ public class GamePanel extends JPanel implements KeyListener {
                     // Cambiar a la escena elegida
                     sceneManager.goToScene(targetSceneId);
 
-                    // Cargar recursos
-                    loadBackground();
-                    loadCharacters();
-
-                    dialogueIndex = 0;
-                    selectedChoice = 0;
-
-                    startText();
-
+	                // Cargar recursos
+	                loadBackground();
+	                loadCharacters();
+	
+	                // Ejecutar acciones de la nueva escena
+	                executeSceneActions();
+	
+	                dialogueIndex = 0;
+	                selectedChoice = 0;
+	
+	                startText();
                     fadingOut = false;
                 }
 

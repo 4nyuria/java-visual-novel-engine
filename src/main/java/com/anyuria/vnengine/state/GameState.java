@@ -20,6 +20,7 @@ public class GameState {
 
     // =========================
     // FLAGS
+    // =========================
 
     public void setFlag(String name, boolean value) {
 
@@ -33,6 +34,7 @@ public class GameState {
 
     // =========================
     // INVENTARIO
+    // =========================
 
     public void addItem(Item item) {
 
@@ -44,16 +46,24 @@ public class GameState {
         inventory.remove(item);
     }
 
+    // Buscar por ID
     public boolean hasItem(String itemId) {
 
         for (Item item : inventory) {
 
             if (item.getId().equals(itemId)) {
+
                 return true;
             }
         }
 
         return false;
+    }
+
+    // Buscar directamente por objeto
+    public boolean hasItem(Item item) {
+
+        return hasItem(item.getId());
     }
 
     public List<Item> getInventory() {

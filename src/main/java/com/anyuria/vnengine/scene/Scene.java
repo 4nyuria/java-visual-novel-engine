@@ -5,7 +5,8 @@ import java.util.List;
 import com.anyuria.vnengine.character.Character;
 import com.anyuria.vnengine.dialogue.Dialogue;
 import com.anyuria.vnengine.choice.Choice;
-import com.anyuria.vnengine.action.SetFlagAction;
+
+import com.anyuria.vnengine.action.Action;
 
 public class Scene {
 
@@ -14,7 +15,7 @@ public class Scene {
     private String backgroundPath;
     private List<Character> characters;
     private List<Choice> choices;
-    private List<SetFlagAction> actions;
+    private List<Action> actions;
     
     public Scene(
             int id,
@@ -58,12 +59,11 @@ public class Scene {
         return choices;
     }
     
-    public void addAction(SetFlagAction action) {
-
+    public void addAction(Action action) {
         actions.add(action);
     }
     
-    public List<SetFlagAction> getActions() {
+    public List<Action> getActions() {
 
         return actions;
     }

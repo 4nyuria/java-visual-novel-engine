@@ -2,7 +2,7 @@ package com.anyuria.vnengine.action;
 
 import com.anyuria.vnengine.state.GameState;
 
-public class SetFlagAction {
+public class SetFlagAction implements Action {
 
     private String flagName;
     private boolean value;
