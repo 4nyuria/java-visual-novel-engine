@@ -13,57 +13,36 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // ==========================================
         // CARGAR HISTORIA DESDE JSON
 
-        StoryLoader storyLoader =
-                new StoryLoader();
+        StoryLoader storyLoader = new StoryLoader();
 
-        List<Scene> loadedScenes =
+        List<Scene> scenes =
                 storyLoader.loadScenes();
 
         System.out.println(
-                "Escenas creadas: "
-                + loadedScenes.size()
+                "Escenas cargadas: "
+                + scenes.size()
         );
 
-        // ==========================================
         // CREAR SCENE MANAGER
 
         SceneManager sceneManager =
                 new SceneManager();
 
-        // ==========================================
-        // AGREGAR ESCENAS CARGADAS
+        // AGREGAR ESCENAS
 
-        for (Scene scene : loadedScenes) {
+        for (Scene scene : scenes) {
 
             sceneManager.addScene(scene);
 
             System.out.println(
-                    "Escena: "
+                    "Escena agregada: "
                     + scene.getId()
-            );
-
-            System.out.println(
-                    "Diálogos: "
-                    + scene.getDialogues().size()
-            );
-
-            System.out.println(
-                    "Personajes: "
-                    + scene.getCharacters().size()
-            );
-
-            System.out.println(
-                    "Choices: "
-                    + scene.getChoices().size()
             );
         }
 
-        // ==========================================
         // INICIAR JUEGO
-
         SwingUtilities.invokeLater(() -> {
 
             new Game(sceneManager);
