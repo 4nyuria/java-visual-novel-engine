@@ -263,6 +263,8 @@ public class GamePanel extends JPanel implements KeyListener {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+        
+        Scene currentScene = sceneManager.getCurrentScene();
 
         // Fondo
         if (backgroundImage != null) {
@@ -289,12 +291,21 @@ public class GamePanel extends JPanel implements KeyListener {
         }
         
      // Personajes
-        Scene currentScene = sceneManager.getCurrentScene();
-
         if (currentScene != null && characterImages != null) {
 
             List<com.anyuria.vnengine.character.Character> characters =
                     currentScene.getCharacters();
+
+            // Personaje que está hablando
+            com.anyuria.vnengine.character.Character activeCharacter = null;
+
+            if (!currentScene.getDialogues().isEmpty()) {
+
+                activeCharacter = currentScene
+                        .getDialogues()
+                        .get(dialogueIndex)
+                        .getSpeaker();
+            }
 
             for (int i = 0; i < characters.size(); i++) {
 
@@ -321,7 +332,8 @@ public class GamePanel extends JPanel implements KeyListener {
 
                 } else if (position == CharacterPosition.RIGHT) {
 
-                    characterX = getWidth() - characterWidth - 50;
+                    characterX =
+                            getWidth() - characterWidth - 50;
 
                 } else {
 
@@ -332,6 +344,24 @@ public class GamePanel extends JPanel implements KeyListener {
                 int characterY =
                         getHeight() - characterHeight;
 
+
+                // ==========================================
+                // PERSONAJE INACTIVO
+
+                if (activeCharacter != null
+                        && character != activeCharacter) {
+
+                    g2.setComposite(
+                            java.awt.AlphaComposite
+                                    .getInstance(
+                                            java.awt.AlphaComposite.SRC_OVER,
+                                            0.45f
+                                    )
+                    );
+                }
+
+
+                // Dibujar personaje
                 g2.drawImage(
                         image,
                         characterX,
@@ -339,6 +369,16 @@ public class GamePanel extends JPanel implements KeyListener {
                         characterWidth,
                         characterHeight,
                         null
+                );
+
+
+                // Volver a transparencia normal
+                g2.setComposite(
+                        java.awt.AlphaComposite
+                                .getInstance(
+                                        java.awt.AlphaComposite.SRC_OVER,
+                                        1.0f
+                                )
                 );
             }
         }
