@@ -1,9 +1,10 @@
 package com.anyuria.vnengine.scene;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.anyuria.vnengine.character.Character;
 import com.anyuria.vnengine.dialogue.Dialogue;
-
+import com.anyuria.vnengine.choice.Choice;
 
 public class Scene {
 
@@ -11,7 +12,7 @@ public class Scene {
     private List<Dialogue> dialogues;
     private String backgroundPath;
     private List<Character> characters;
- 
+    private List<Choice> choices;
     
     public Scene(
             int id,
@@ -23,22 +24,40 @@ public class Scene {
         this.id = id;
         this.dialogues = dialogues;
         this.backgroundPath = backgroundPath;
-        this.characters = characters;
+        this.characters = new ArrayList<>();
+        
+        for (Character character : characters) {
+            this.characters.add(character);
+        }
+        
+        this.choices = new ArrayList<>();
     }
 
     public int getId() {
         return id;
     }
-
+    
+   public List<Character> getCharacters() {
+        return characters;
+    }
+   
     public List<Dialogue> getDialogues() {
         return dialogues;
     }
 
+
+    
+    public void addChoice(Choice choice) {
+
+        choices.add(choice);
+    }
+    public List<Choice> getChoices() {
+
+        return choices;
+    }
+    
     public String getBackgroundPath() {
         return backgroundPath;
     }
-
-    public List<Character> getCharacters() {
-        return characters;
-    }
 }
+
