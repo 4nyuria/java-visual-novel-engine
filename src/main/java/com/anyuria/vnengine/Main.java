@@ -15,7 +15,6 @@ public class Main {
 
         // ==========================================
         // CARGAR HISTORIA DESDE JSON
-        // ==========================================
 
         StoryLoader storyLoader =
                 new StoryLoader();
@@ -30,14 +29,12 @@ public class Main {
 
         // ==========================================
         // CREAR SCENE MANAGER
-        // ==========================================
 
         SceneManager sceneManager =
                 new SceneManager();
 
         // ==========================================
         // AGREGAR ESCENAS CARGADAS
-        // ==========================================
 
         for (Scene scene : loadedScenes) {
 
@@ -66,7 +63,6 @@ public class Main {
 
         // ==========================================
         // INICIAR JUEGO
-        // ==========================================
 
         SwingUtilities.invokeLater(() -> {
 

@@ -84,7 +84,13 @@ public class StoryLoader {
                                     itemName,
                                     description
                             );
+                    System.out.println(
+                            "Buscando item: " + itemId
+                    );
 
+                    System.out.println(
+                            "Item encontrado: " + (item != null)
+                    );
                     items.put(itemId, item);
                 }
             }

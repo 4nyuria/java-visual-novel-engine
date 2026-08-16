@@ -1,3 +1,4 @@
+
 {
     "items": [
         {
@@ -40,6 +41,11 @@
                 {
                     "text": "Investigar la casa",
                     "targetScene": 2
+                },
+                {
+                    "text": "Ir a la puerta",
+                    "targetScene": 3,
+                    "requiredItem": "key"
                 },
                 {
                     "text": "Salir a la calle",
@@ -85,6 +91,51 @@
                 {
                     "type": "addItem",
                     "item": "key"
+                }
+            ],
+
+            "choices": [
+                {
+                    "text": "Volver a la habitación",
+                    "targetScene": 1
+                }
+            ]
+        },
+
+        {
+            "id": 3,
+            "background": "/backgrounds/street.jpeg",
+
+            "characters": [
+                {
+                    "id": "cat",
+                    "image": "/characters/cat.png",
+                    "position": "CENTER"
+                },
+                {
+                    "id": "other",
+                    "image": "/characters/other.png",
+                    "position": "RIGHT"
+                }
+            ],
+
+            "dialogues": [
+                {
+                    "speaker": "cat",
+                    "text": "Entonces este es el camino..."
+                }
+            ],
+
+            "choices": [
+                {
+                    "text": "Abrir la puerta",
+                    "targetScene": 2,
+                    "requiredFlag": "foundKey",
+                    "requiredItem": "key"
+                },
+                {
+                    "text": "Alejarse",
+                    "targetScene": 1
                 }
             ]
         }

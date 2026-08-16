@@ -350,7 +350,9 @@ public class GamePanel extends JPanel implements KeyListener {
 	
 	                dialogueIndex = 0;
 	                selectedChoice = 0;
-	
+	                showingChoices = false;
+	                showContinueIndicator = false;
+
 	                startText();
                     fadingOut = false;
                 }
@@ -826,58 +828,67 @@ public class GamePanel extends JPanel implements KeyListener {
     	        return;
     	    }
     	}
-    	
-    	//para saltar cinematica o texto
-    	
-        if (e.getKeyCode() == KeyEvent.VK_SPACE
-                || e.getKeyCode() == KeyEvent.VK_ENTER) {
+    	// ==========================================
+    	// CONTINUAR DIÁLOGO
+    	// ==========================================
 
-            // Si el texto todavía se está escribiendo
-            if (!isTextComplete()) {
+    	if (e.getKeyCode() == KeyEvent.VK_SPACE
+    	        || e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-                finishText();
+    	    // Si el texto todavía se está escribiendo
+    	    if (!isTextComplete()) {
 
-                return;
-            }
-            
-            Scene currentScene = sceneManager.getCurrentScene();
-            
-            //opciones
-            if (currentScene != null
-                    && !currentScene.getChoices().isEmpty()) {
+    	        finishText();
 
-                showingChoices = true;
-                selectedChoice = 0;
+    	        return;
+    	    }
 
-                repaint();
+    	    Scene currentScene =
+    	            sceneManager.getCurrentScene();
 
-                return;
-            }
-            
-            // Si hay otro diálogo dentro de la escena
-            if (hasNextDialogue()) {
+    	    // ==========================================
+    	    // SIGUIENTE DIÁLOGO
+    	    // ==========================================
 
-                dialogueIndex++;
+    	    if (hasNextDialogue()) {
 
-                startText();
+    	        dialogueIndex++;
 
-                repaint();
+    	        startText();
 
-                return;
-            }
+    	        repaint();
 
-            // Si no hay más diálogos, pasar a la siguiente escena
-            if (sceneManager.hasNextScene()) {
+    	        return;
+    	    }
 
-                int nextSceneId =
-                        sceneManager
-                                .getCurrentScene()
-                                .getId() + 1;
+    	    // ==========================================
+    	    // MOSTRAR OPCIONES
+    	    // ==========================================
 
-                startSceneTransition(nextSceneId);
-            }
+    	    if (currentScene != null
+    	            && !getAvailableChoices().isEmpty()) {
+
+    	        showingChoices = true;
+    	        selectedChoice = 0;
+
+    	        repaint();
+
+    	        return;
+    	    }
+
+    	    // ==========================================
+    	    // SIGUIENTE ESCENA
+    	    // ==========================================
+
+    	    if (sceneManager.hasNextScene()) {
+
+    	        int nextSceneId =
+    	                currentScene.getId() + 1;
+
+    	        startSceneTransition(nextSceneId);
+    	    }
+    	}
         }
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {
