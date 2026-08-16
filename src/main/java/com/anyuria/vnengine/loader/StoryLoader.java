@@ -240,7 +240,25 @@ public class StoryLoader {
 
                         String requiredFlag = null;
                         String requiredItem = null;
+                        String requiredVariable = null;
+                        int requiredValue = 0;
 
+                        if (choiceNode.has("requiredVariable")) {
+
+                            requiredVariable =
+                                    choiceNode
+                                            .get("requiredVariable")
+                                            .asText();
+                        }
+
+                        if (choiceNode.has("requiredValue")) {
+
+                            requiredValue =
+                                    choiceNode
+                                            .get("requiredValue")
+                                            .asInt();
+                        }
+                        
                         if (choiceNode.has("requiredFlag")) {
 
                             requiredFlag =
@@ -262,7 +280,9 @@ public class StoryLoader {
                                         text,
                                         targetScene,
                                         requiredFlag,
-                                        requiredItem
+                                        requiredItem,
+                                        requiredVariable,
+                                        requiredValue
                                 );
 
                         choices.add(choice);

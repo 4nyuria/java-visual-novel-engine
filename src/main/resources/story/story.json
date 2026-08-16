@@ -109,7 +109,13 @@
                 {
                     "text": "Volver a la habitación",
                     "targetScene": 1
-                }
+                },
+				{
+				    "text": "Hablar con confianza",
+				    "targetScene": 3,
+				    "requiredVariable": "trust",
+				    "requiredValue": 5
+				}
             ]
         },
 

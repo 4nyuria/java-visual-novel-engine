@@ -416,8 +416,23 @@ public class GamePanel extends JPanel implements KeyListener {
 
             return false;
         }
+        String requiredVariable =
+                choice.getRequiredVariable();
 
+        if (requiredVariable != null) {
+
+            int requiredValue =
+                    choice.getRequiredValue();
+
+            if (!gameState.hasVariable(
+                    requiredVariable,
+                    requiredValue)) {
+
+                return false;
+            }
+        }
         return true;
+        
     }
     
     private List<com.anyuria.vnengine.choice.Choice> getAvailableChoices() {
