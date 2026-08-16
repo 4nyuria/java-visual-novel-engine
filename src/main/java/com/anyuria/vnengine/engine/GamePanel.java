@@ -22,7 +22,7 @@ import com.anyuria.vnengine.scene.SceneManager;
 import com.anyuria.vnengine.character.CharacterPosition;
 import com.anyuria.vnengine.state.GameState;
 import com.anyuria.vnengine.action.Action;
-
+import com.anyuria.vnengine.choice.Choice;
 
 public class GamePanel extends JPanel implements KeyListener {
 
@@ -376,16 +376,24 @@ public class GamePanel extends JPanel implements KeyListener {
         startSceneTransition(targetSceneId);
     }
     
-    private boolean isChoiceAvailable(com.anyuria.vnengine.choice.Choice choice) {
+    private boolean isChoiceAvailable(Choice choice) {
 
-        String requiredFlag =
-                choice.getRequiredFlag();
+        String requiredFlag = choice.getRequiredFlag();
+        String requiredItem = choice.getRequiredItem();
 
-        if (requiredFlag == null) {
-            return true;
+        if (requiredFlag != null
+                && !gameState.getFlag(requiredFlag)) {
+
+            return false;
         }
 
-        return gameState.getFlag(requiredFlag);
+        if (requiredItem != null
+                && !gameState.hasItem(requiredItem)) {
+
+            return false;
+        }
+
+        return true;
     }
     
     private List<com.anyuria.vnengine.choice.Choice> getAvailableChoices() {
@@ -648,8 +656,8 @@ public class GamePanel extends JPanel implements KeyListener {
                 && currentScene != null
                 && !currentScene.getChoices().isEmpty()) {
 
-            List<com.anyuria.vnengine.choice.Choice> choices =
-                    currentScene.getChoices();
+        	List<com.anyuria.vnengine.choice.Choice> choices =
+        	        getAvailableChoices();
 
             int choiceWidth = getWidth() - 200;
             int choiceHeight = 50;

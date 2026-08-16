@@ -72,7 +72,7 @@ public class Main {
                         "ir a la puerta",
                         2,
                         null,
-                        "Key"
+                        "key"
                 )
         );
         scene1.addChoice(
